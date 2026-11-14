@@ -345,19 +345,36 @@ limitações.
 
 ### Deploy
 
-Recomendado: **Hugging Face Spaces** com SDK Streamlit (16 GB de RAM em CPU),
-porque o modelo de 220M não cabe com folga no plano gratuito do Streamlit
-Community Cloud.
+**Aplicação publicada:**
+<https://fiap-fase4-manchetes-xjjk25vdjk25m5pdcuwzjl.streamlit.app/>
 
-1. Publique o modelo ajustado no Hub (`scripts/treinar_modelo.py --push-hub ...`
-   ou a célula 9 do notebook).
-2. Crie um Space novo do tipo Streamlit e envie `app.py`, `manchetes/`,
-   `requirements.txt` e `data/exemplos.json`.
-3. Defina o *secret* `MODELO_ID=<usuario>/manchetes-ptt5`.
-4. Anote a URL pública para o TXT de entrega.
+Plataforma: **Streamlit Community Cloud**, que constrói direto do repositório do
+GitHub. O modelo é baixado do Hugging Face Hub na primeira geração.
 
-Alternativa: Streamlit Community Cloud apontando para o repositório do GitHub,
-com `MODELO_ID` em *Secrets* e um modelo menor se faltar memória.
+Como reproduzir o deploy:
+
+1. Publique o modelo: `python scripts/treinar_modelo.py --push-hub SEU_USUARIO/manchetes-ptt5`
+   (ou use a célula 9 de [notebooks/treinar_colab.ipynb](notebooks/treinar_colab.ipynb)).
+2. Em <https://share.streamlit.io>, escolha **Deploy a public app from GitHub**.
+3. Repository `SEU_USUARIO/fiap-fase4-manchetes`, branch `main`, main file `app.py`.
+4. Em **Advanced settings**, Python 3.12 e o secret:
+
+   ```toml
+   MODELO_ID = "SEU_USUARIO/manchetes-ptt5"
+   ```
+
+5. **Deploy**. O `requirements.txt` já usa o índice CPU do PyTorch, o que reduz o
+   build de ~2 GB de downloads para ~200 MB.
+
+**Verificação feita na aplicação publicada:** as três sugestões geradas para um
+texto inédito foram coerentes com a notícia, e a barra lateral exibiu o modelo
+`rsevero/manchetes-ptt5` e a tabela de métricas do teste.
+
+> **Por que não Hugging Face Spaces:** a conta usada no projeto recebeu
+> `Quota exceeded for flavor cpu-basic (limit=0)`, ou seja, sem direito a
+> instância gratuita de CPU. O Space chegou a ser criado com os arquivos
+> enviados, mas não entra em execução. Por isso o deploy foi feito no Streamlit
+> Community Cloud.
 
 ## Entrega
 

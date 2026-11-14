@@ -71,69 +71,32 @@ Cuba"), 2 de 300 manchetes longas (até 41 palavras) e 16 de 900 sugestões copi
 
 ## Próxima ação (em ordem)
 
-### A. Publicar o repositório no GitHub (5 min, no VS Code)
+### Situação
 
-```bash
-git config user.name "SEU NOME"
-git config user.email "seu@email.com"   # o mesmo e-mail da conta GitHub
-git commit -m "Fase 4: coleta, splits por acontecimento, treino, avaliacao e app"
-```
+- Repositório publicado: <https://github.com/rodrigosevero/fiap-fase4-manchetes>
+- Modelo no Hub: <https://huggingface.co/rsevero/manchetes-ptt5>
+- App publicado e testado: <https://fiap-fase4-manchetes-xjjk25vdjk25m5pdcuwzjl.streamlit.app/>
+  (Streamlit Community Cloud, secret `MODELO_ID = rsevero/manchetes-ptt5`)
 
-Depois crie o repositório **fiap-fase4-manchetes** (público, sem README e sem
-.gitignore) em github.com/new e envie:
+### 1. Gravar o vídeo (pendente)
 
-```bash
-git remote add origin https://github.com/SEU_USUARIO/fiap-fase4-manchetes.git
-git push -u origin main
-```
+Seguir `ROTEIRO_VIDEO.md`, que já traz os números reais para ler na tela.
+Publicar como "não listado" no YouTube e copiar o link.
 
-No VS Code também dá para usar **Source Control → Publish Branch**, que resolve a
-autenticação sozinho.
+### 2. Preencher o vídeo no `entrega.txt`
 
-### B. Treinar no Colab (25 min)
+Trocar a linha `Vídeo (mínimo de 5 minutos): PENDENTE` pela URL.
 
-1. Abra `notebooks/treinar_colab.ipynb` no Colab (aba GitHub) e escolha GPU T4.
-2. Na célula 2, troque `USUARIO` pelo seu usuário do GitHub.
-3. Execute as células 1 a 8 (a 9 e a 10 dependem do Hugging Face).
-4. Baixe `resultados.zip` e copie `avaliacao/` e `metricas_treino.json` para o
-   projeto local.
+### 3. Commit final (somente após confirmação do aluno)
 
-### C. Conta e token no Hugging Face (5 min)
+Inclui: README com URL publicada, `entrega.txt` preenchido e `ESTADO_ATUAL.md`.
 
-1. Criar conta em <https://huggingface.co/join>.
-2. <https://huggingface.co/settings/tokens> → **New token** → tipo **Write**.
-3. No Colab, ícone de chave (Secrets) → nome `HF_TOKEN`, valor do token,
-   habilitar acesso ao notebook.
-4. Rodar as células 9 e 10 do notebook: publica o modelo e o `comparacao.json`.
+### 4. Opcional
 
-### D. Publicar o Space (10 min)
-
-1. <https://huggingface.co/new-space> → nome `manchetes-ptt5-playground`,
-   SDK **Streamlit**, público.
-2. Enviar os arquivos com `huggingface_hub` (não precisa de git):
-
-```python
-from huggingface_hub import HfApi
-api = HfApi(token="hf_SEU_TOKEN")
-api.upload_folder(
-    repo_id="SEU_USUARIO/manchetes-ptt5-playground",
-    repo_type="space",
-    folder_path=".",
-    allow_patterns=["app.py", "manchetes/*", "requirements.txt", "data/exemplos.json"],
-)
-```
-
-3. No Space: **Settings → Variables and secrets → New secret**,
-   nome `MODELO_ID`, valor `SEU_USUARIO/manchetes-ptt5`.
-4. Esperar o build e conferir que gera 3 sugestões.
-
-### E. Fechar a entrega
-
-1. Preencher a seção de resultados do README com os números de
-   `avaliacao/comparacao.json`.
-2. Gravar o vídeo seguindo `ROTEIRO_VIDEO.md`.
-3. Preencher `entrega.txt` com as três URLs.
-4. `git add -A && git commit -m "resultados finais" && git push`.
+- Apagar o Space do Hugging Face (`rsevero/manchetes-ptt5-playground`), que ficou
+  parado por falta de cota na conta. O `Dockerfile` foi removido do repositório.
+- Se sobrar tempo: ampliar a coleta para ~8000 notícias e retreinar, para reduzir
+  a similaridade entre as três sugestões.
 
 ## Pendências e riscos
 

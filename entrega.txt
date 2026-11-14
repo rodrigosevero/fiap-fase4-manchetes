@@ -1,6 +1,18 @@
 Prova Substitutiva — Fase 4 — Machine Learning Engineering (FIAP)
 Projeto: fiap-fase4-manchetes — geração de manchetes em português com T5 ajustado
+Aluno: Rodrigo Severo
 
-Repositório GitHub: PENDENTE
-Playground Streamlit: PENDENTE
-Vídeo (5+ minutos): PENDENTE
+Repositório GitHub:
+https://github.com/rodrigosevero/fiap-fase4-manchetes
+
+Playground Streamlit (aplicação publicada):
+https://fiap-fase4-manchetes-xjjk25vdjk25m5pdcuwzjl.streamlit.app/
+
+Vídeo (mínimo de 5 minutos):
+PENDENTE
+
+Material complementar:
+- Modelo ajustado no Hugging Face Hub:
+  https://huggingface.co/rsevero/manchetes-ptt5
+- Notebook de treinamento (Google Colab):
+  https://github.com/rodrigosevero/fiap-fase4-manchetes/blob/main/notebooks/treinar_colab.ipynb
