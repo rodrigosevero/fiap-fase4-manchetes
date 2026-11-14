@@ -1,0 +1,32 @@
+{
+  "entrada": "data/noticias.csv",
+  "noticias_lidas": 3000,
+  "noticias_unicas": 3000,
+  "removidas_por_texto_repetido": 0,
+  "grupos": 2827,
+  "maior_grupo": 8,
+  "limiar_similaridade": 0.25,
+  "semente": 42,
+  "splits": {
+    "treino": {
+      "noticias": 2400,
+      "grupos": 2227,
+      "fracao": 0.8
+    },
+    "validacao": {
+      "noticias": 300,
+      "grupos": 300,
+      "fracao": 0.1
+    },
+    "teste": {
+      "noticias": 300,
+      "grupos": 300,
+      "fracao": 0.1
+    }
+  },
+  "verificacoes": {
+    "grupos_disjuntos": true,
+    "ids_unicos_entre_splits": true,
+    "textos_unicos_entre_splits": true
+  }
+}

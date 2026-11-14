@@ -1,0 +1,43 @@
+# Ambiente virtual
+.venv/
+venv/
+env/
+
+# Caches e artefatos de ferramentas
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Modelos e checkpoints
+checkpoints/
+models/
+modelos/
+*.ckpt
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+*.h5
+*.pkl
+
+# Arquivos gerados
+# A coleta bruta fica fora do repositório (é regenerável pelo script).
+data/*.csv
+*.tmp
+*.log
+
+# Os conjuntos curados de treino/validação/teste são versionados para que o
+# treinamento no Colab funcione a partir de um clone limpo.
+!data/splits/
+!data/splits/*.csv
+
+# Material do curso (não redistribuir publicamente)
+docs/*.pdf
+
+# Sistema operacional
+.DS_Store
+Thumbs.db

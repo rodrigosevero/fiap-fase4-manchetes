@@ -1,0 +1,10 @@
+# Aplicação Streamlit e avaliação
+torch>=2.6
+transformers>=4.46
+sentencepiece>=0.2
+accelerate>=1.0
+safetensors>=0.4
+streamlit>=1.36
+pandas>=2.2
+rouge-score>=0.1.2
+sacrebleu>=2.4

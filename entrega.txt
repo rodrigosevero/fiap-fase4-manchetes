@@ -1,0 +1,6 @@
+Prova Substitutiva — Fase 4 — Machine Learning Engineering (FIAP)
+Projeto: fiap-fase4-manchetes — geração de manchetes em português com T5 ajustado
+
+Repositório GitHub: PENDENTE
+Playground Streamlit: PENDENTE
+Vídeo (5+ minutos): PENDENTE

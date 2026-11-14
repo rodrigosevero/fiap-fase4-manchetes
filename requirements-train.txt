@@ -1,0 +1,10 @@
+# Treinamento no Google Colab (GPU T4)
+# O Colab já traz torch com CUDA; os demais pacotes são instalados aqui.
+# Não fixamos transformers em 5.x para evitar que o pip troque o torch do Colab.
+transformers>=4.46
+accelerate>=1.0
+sentencepiece>=0.2
+safetensors>=0.4
+rouge-score>=0.1.2
+sacrebleu>=2.4
+huggingface-hub>=0.24
