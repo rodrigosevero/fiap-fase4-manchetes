@@ -194,7 +194,12 @@ def main():
     parser.add_argument("--max-saida", type=int, default=64)
     parser.add_argument("--semente", type=int, default=42)
     parser.add_argument("--limite-exemplos", type=int, default=None)
-    parser.add_argument("--limite-validacao", type=int, default=100)
+    parser.add_argument(
+        "--limite-validacao",
+        type=int,
+        default=None,
+        help="limita a validação a N exemplos (padrão: usa o conjunto inteiro)",
+    )
     parser.add_argument("--fp16", action="store_true")
     parser.add_argument("--push-hub", default=None, help="repositório no Hugging Face")
     args = parser.parse_args()
