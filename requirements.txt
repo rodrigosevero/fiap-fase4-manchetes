@@ -1,4 +1,8 @@
 # Aplicação Streamlit e avaliação
+# Índice CPU do PyTorch: evita baixar a build com CUDA num ambiente sem GPU
+# (o Hugging Face Spaces roda em CPU e o build fica bem mais rápido).
+--extra-index-url https://download.pytorch.org/whl/cpu
+
 torch>=2.6
 transformers>=4.46
 sentencepiece>=0.2

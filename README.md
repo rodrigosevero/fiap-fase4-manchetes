@@ -13,11 +13,10 @@ O desenvolvimento, a coleta, a avaliação e o Streamlit rodam no VS Code com 16
 de RAM e sem GPU NVIDIA. O treinamento roda no Google Colab com GPU Tesla T4,
 reaproveitando o código deste repositório.
 
-> **Status:** coleta, preparação, divisão por acontecimento, script de treino,
-> script de avaliação e playground estão implementados e validados localmente.
-> O ajuste do modelo depende da execução no Colab — veja
-> [notebooks/treinar_colab.ipynb](notebooks/treinar_colab.ipynb).
-> O acompanhamento da entrega está em [ESTADO_ATUAL.md](ESTADO_ATUAL.md).
+> **Status:** modelo ajustado, avaliado e publicado em
+> <https://huggingface.co/rsevero/manchetes-ptt5>. Resultados reais na seção
+> [Resultados](#resultados-300-notícias-de-teste). Playground e vídeo em
+> finalização — acompanhamento em [ESTADO_ATUAL.md](ESTADO_ATUAL.md).
 
 ## Estrutura
 
@@ -235,47 +234,99 @@ As métricas são calculadas sobre a melhor das três sugestões de cada notíci
 elas capturam o principal modo de falha de modelos de resumo/manchete, que é
 devolver o próprio texto de entrada.
 
-### Resultado do modelo original (300 notícias de teste)
+### Resultados (300 notícias de teste)
 
-Execução real, `avaliacao/base.json`:
+Treino: 2400 exemplos, 750 passos, 6 épocas, 15,3 min numa Tesla T4
+(Python 3.13, torch 2.14.1+cu130, transformers 5.22.1).
+Seleção do checkpoint por ROUGE-L na validação (300 notícias):
+`rouge1` 0,4303 · `rouge2` 0,2526 · `rougeL` 0,3906 · `bleu` 0,1502 · loss 2,0835.
 
-| Métrica | Valor |
-| --- | --- |
-| `rouge1` | 0,2954 |
-| `rouge2` | 0,1413 |
-| `rougeL` | 0,2430 |
-| `bleu` | 0,0460 |
-| `taxa_copia_exata` | 0,3485 |
-| `aproveitamento_fonte` | 0,9813 |
-| `maior_trecho_comum` | 0,8457 |
-| `distinct1_entre_sugestoes` | 0,3541 |
-| `palavras_por_manchete` | 33,21 |
+| Métrica | Base | Ajustado | Variação |
+| --- | --- | --- | --- |
+| `rouge1` | 0,2954 | **0,4574** | +55% |
+| `rouge2` | 0,1413 | **0,2764** | +96% |
+| `rougeL` | 0,2430 | **0,4209** | +73% |
+| `bleu` | 0,0460 | **0,1634** | +255% |
+| `jaccard_com_referencia` | 0,1777 | **0,2731** | +54% |
+| `taxa_copia_exata` | 0,3481 | **0,0178** | −95% |
+| `aproveitamento_fonte` | 0,9813 | **0,8967** | −9% |
+| `maior_trecho_comum` | 0,8456 | **0,4812** | −43% |
+| `distinct1_entre_sugestoes` | 0,3536 | **0,4171** | +18% |
+| `palavras_por_manchete` | 33,21 | **12,44** | −63% |
+| `segundos_por_noticia` | 9,14 | **3,54** | −61% |
+| `taxa_igual_a_titulo_de_treino` | 0,0000 | **0,0000** | — |
 
-O `ptt5` **sem ajuste não gera manchetes**: ele continua o texto recebido. Três
-evidências nos números acima:
+Três leituras que sustentam a conclusão:
 
-- 34,85% das sugestões aparecem **literalmente** no texto de entrada;
-- 98,13% das palavras das sugestões já existem no texto-fonte;
-- as sugestões têm 33 palavras em média, o tamanho de uma frase, não de manchete.
+1. **Qualidade:** ROUGE-1 e ROUGE-L sobem 55% e 73%, e o BLEU quadruplica. As
+   manchetes passam de 33 para 12,4 palavras — saem do tamanho de frase e chegam
+   ao tamanho de manchete.
+2. **Originalidade:** a cópia literal cai de 34,8% para 1,8% das sugestões e o
+   maior trecho copiado cai de 85% para 48% da manchete. O modelo deixou de
+   devolver o texto de entrada.
+3. **Memorização:** nenhuma sugestão coincide com títulos do treino
+   (`taxa_igual_a_titulo_de_treino` = 0), então o ganho não vem de decorar.
 
-A pontuação de ROUGE (0,2954) existe só porque as frases copiadas compartilham
-palavras com o título real. É um exemplo claro de métrica lexical enganosa: sem
-as métricas de originalidade, o modelo base pareceria competitivo. Isso é
-esperado, porque o `ptt5` não passou por instrução e não conhece a tarefa.
+O `aproveitamento_fonte` continua alto (0,90) porque manchetes de notícia
+reaproveitam nomes próprios e termos do texto. Isso é esperado e não indica cópia:
+`maior_trecho_comum` mostra que as sequências longas copiadas caíram pela metade.
 
-É por isso que a comparação com o modelo ajustado é a evidência central do
-trabalho: ROUGE sozinho não distingue um gerador de manchetes de um copiador.
+### Exemplos reais
+
+**Acerto** — referência: *"Sócrates disse que trabalha para que referendo sobre a
+Constituição Européia aconteça em Outubro, em Portugal"*
+
+```
+ajustado: Sócrates diz que vai trabalhar para que referendo português aconteça em outubro
+          Primeiro-ministro de Portugal diz que vai trabalhar para que referendo aconteça em outubro
+```
+
+**Acerto** — referência: *"Lula disse ontem que vai 'cortar da própria carne'"*
+
+```
+ajustado: Lula diz que vai tomar todas as medidas necessárias para combater a corrupção
+          Lula diz que não vai encobrir nenhum caso de corrupção
+```
+
+**Falha de factualidade** — referência: *"Após 45 anos, Fidel Castro entra numa igreja"*
+
+```
+base    : A morte do papa João Paulo II fez com que o presidente de Cuba Fidel Castro entrasse numa igreja...
+ajustado: Morre o papa João Paulo II, presidente de Cuba
+```
+
+O ajustado criou uma manchete plausível na forma, mas **errada no conteúdo**:
+confundiu o papa com o presidente de Cuba. É o risco central de geração abstrativa
+e o motivo de a revisão humana ser obrigatória.
+
+**Falha de formato** — 2 de 300 notícias geraram manchetes com mais de 28 palavras
+(a maior com 41), voltando ao comportamento de frase corrida.
+
+**Falha residual de cópia** — 16 de 900 sugestões (1,8%) aparecem literalmente no
+texto, como *"Boa Vista, capital de Roraima, amanheceu diferente do normal"* para a
+referência *"Propaganda eleitoral suja Boa Vista"*. Algumas dessas cópias até leem
+bem como manchete, mas não são geração: são transcrição.
 
 ### Limitações conhecidas
 
-- 3000 notícias é um conjunto pequeno para geração abstrativa; o modelo tende a
-  reaproveitar trechos da entrada em vez de parafrasear.
-- O agrupamento por acontecimento é heurístico.
-- Títulos de séries (rodadas de campeonato, apurações eleitorais) têm formato
-  repetitivo e podem ser reproduzidos mecanicamente.
-- A avaliação automática não mede factualidade nem adequação jornalística.
-- O Wikinotícias tem cobertura irregular por período; a distribuição por ano é
-  desigual.
+- **Invenção factual.** O modelo combina entidades do texto de forma plausível e
+  errada, como no caso "Morre o papa João Paulo II, presidente de Cuba". Nenhuma
+  métrica automática aqui detecta isso; é preciso revisão humana.
+- **Formato instável em casos raros.** 2 de 300 notícias produziram manchetes
+  longas (até 41 palavras), voltando ao estilo de frase corrida.
+- **Cópia residual.** 1,8% das sugestões são transcrição literal de um trecho.
+  A métrica `taxa_copia_exata` também pode marcar frases legítimas que por acaso
+  existem no texto, então o número é um limite superior.
+- **Conjunto pequeno.** 3000 notícias é pouco para geração abstrativa; mais dados
+  devem reduzir a cópia e melhorar a paráfrase.
+- **Agrupamento heurístico.** O agrupamento por acontecimento usa TF-IDF e pode
+  não juntar notícias do mesmo evento escritas com vocabulário muito diferente.
+- **Padrões de série.** Rodadas de campeonato e apurações eleitorais têm título
+  repetitivo e podem ser reproduzidas mecanicamente.
+- **Cobertura desigual.** O Wikinotícias tem distribuição irregular por ano, e o
+  modelo não conhece eventos posteriores ao corpus.
+- **Avaliação lexical.** ROUGE e BLEU medem sobreposição de palavras, não
+  factualidade, clareza ou adequação jornalística.
 
 ## Etapa 6 — Playground Streamlit
 
@@ -310,7 +361,10 @@ com `MODELO_ID` em *Secrets* e um modelo menor se faltar memória.
 
 ## Entrega
 
-O arquivo `entrega.txt` deve conter:
+Repositório: <https://github.com/rodrigosevero/fiap-fase4-manchetes>
+Modelo no Hub: <https://huggingface.co/rsevero/manchetes-ptt5>
+
+O arquivo [`entrega.txt`](entrega.txt) deve conter as três URLs exigidas:
 
 - URL do repositório no GitHub;
 - URL do playground publicado;

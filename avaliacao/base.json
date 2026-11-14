@@ -1,15 +1,15 @@
 {
   "noticias_avaliadas": 300,
-  "sugestoes_por_noticia": 2.78,
+  "sugestoes_por_noticia": 2.79,
   "rouge1": 0.2954,
   "rouge2": 0.1413,
   "rougeL": 0.243,
   "bleu": 0.046,
-  "jaccard_com_referencia": 0.1775,
-  "taxa_copia_exata": 0.3485,
+  "jaccard_com_referencia": 0.1777,
+  "taxa_copia_exata": 0.3481,
   "aproveitamento_fonte": 0.9813,
-  "maior_trecho_comum": 0.8457,
-  "distinct1_entre_sugestoes": 0.3541,
+  "maior_trecho_comum": 0.8456,
+  "distinct1_entre_sugestoes": 0.3536,
   "palavras_por_manchete": 33.21,
   "taxa_igual_a_titulo_de_treino": 0.0,
   "rotulo": "base",
@@ -22,5 +22,5 @@
     "temperatura": 0.9,
     "com_prefixo": true
   },
-  "segundos_por_noticia": 3.875
+  "segundos_por_noticia": 9.144
 }

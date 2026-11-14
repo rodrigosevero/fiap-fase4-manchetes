@@ -1,0 +1,26 @@
+{
+  "noticias_avaliadas": 300,
+  "sugestoes_por_noticia": 3.0,
+  "rouge1": 0.4574,
+  "rouge2": 0.2764,
+  "rougeL": 0.4209,
+  "bleu": 0.1634,
+  "jaccard_com_referencia": 0.2731,
+  "taxa_copia_exata": 0.0178,
+  "aproveitamento_fonte": 0.8967,
+  "maior_trecho_comum": 0.4812,
+  "distinct1_entre_sugestoes": 0.4171,
+  "palavras_por_manchete": 12.44,
+  "taxa_igual_a_titulo_de_treino": 0.0,
+  "rotulo": "ajustado",
+  "modelo": "modelos/manchetes-ptt5",
+  "conjunto": "data/splits/teste.csv",
+  "decodificacao": {
+    "num_beams": 4,
+    "sequencias": 3,
+    "amostragem": false,
+    "temperatura": 0.9,
+    "com_prefixo": true
+  },
+  "segundos_por_noticia": 3.543
+}

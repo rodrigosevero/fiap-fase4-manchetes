@@ -1,0 +1,60 @@
+{
+  "rotulos": [
+    "base",
+    "ajustado"
+  ],
+  "noticias_avaliadas": {
+    "base": 300,
+    "ajustado": 300
+  },
+  "metricas": {
+    "rouge1": {
+      "base": 0.2954,
+      "ajustado": 0.4574
+    },
+    "rouge2": {
+      "base": 0.1413,
+      "ajustado": 0.2764
+    },
+    "rougeL": {
+      "base": 0.243,
+      "ajustado": 0.4209
+    },
+    "bleu": {
+      "base": 0.046,
+      "ajustado": 0.1634
+    },
+    "jaccard_com_referencia": {
+      "base": 0.1777,
+      "ajustado": 0.2731
+    },
+    "taxa_copia_exata": {
+      "base": 0.3481,
+      "ajustado": 0.0178
+    },
+    "aproveitamento_fonte": {
+      "base": 0.9813,
+      "ajustado": 0.8967
+    },
+    "maior_trecho_comum": {
+      "base": 0.8456,
+      "ajustado": 0.4812
+    },
+    "distinct1_entre_sugestoes": {
+      "base": 0.3536,
+      "ajustado": 0.4171
+    },
+    "palavras_por_manchete": {
+      "base": 33.21,
+      "ajustado": 12.44
+    },
+    "taxa_igual_a_titulo_de_treino": {
+      "base": 0.0,
+      "ajustado": 0.0
+    },
+    "segundos_por_noticia": {
+      "base": 9.144,
+      "ajustado": 3.543
+    }
+  }
+}

@@ -45,14 +45,29 @@ Validações locais feitas:
 - torch 2.15.0+cpu, transformers 5.23.0, streamlit 1.67.0.
 - Sem GPU; inferência do T5-base leva ~3,7 s por notícia em CPU.
 
-## Números reais já obtidos
+## Números reais obtidos
 
-- Modelo **base**, teste completo (300 notícias), `avaliacao/base.json`:
-  ROUGE-1 0,2954 | ROUGE-L 0,2430 | BLEU 0,0460 | `taxa_copia_exata` 0,3485 |
-  `aproveitamento_fonte` 0,9813 | `maior_trecho_comum` 0,8457 |
-  `distinct1` 0,3541 | 33,21 palavras por manchete.
-  Comportamento: **não gera manchetes, copia o texto de entrada**.
-- Modelo **ajustado**: ainda não treinado — depende do Colab.
+**Modelo base** (teste, 300 notícias): ROUGE-1 0,2954 | ROUGE-2 0,1413 |
+ROUGE-L 0,2430 | BLEU 0,0460 | `taxa_copia_exata` 0,3481 |
+`maior_trecho_comum` 0,8456 | 33,21 palavras por manchete.
+Comportamento: não gera manchetes, copia o texto de entrada.
+
+**Modelo ajustado** (teste, 300 notícias): ROUGE-1 0,4574 | ROUGE-2 0,2764 |
+ROUGE-L 0,4209 | BLEU 0,1634 | `taxa_copia_exata` 0,0178 |
+`maior_trecho_comum` 0,4812 | `distinct1` 0,4171 | 12,44 palavras por manchete |
+`taxa_igual_a_titulo_de_treino` 0,0.
+
+**Treino**: 2400 exemplos, 750 passos, 6 épocas, loss final 4,2453, 15,29 min.
+**Validação** (seleção de checkpoint): ROUGE-1 0,4303 | ROUGE-L 0,3906 |
+BLEU 0,1502 | loss 2,0835.
+**Ambiente Colab**: Python 3.13.16, torch 2.14.1+cu130, transformers 5.22.1, T4.
+
+**Modelo publicado**: <https://huggingface.co/rsevero/manchetes-ptt5>
+(contém pesos, tokenizer, `metricas_treino.json` e `comparacao.json`).
+**Repositório**: <https://github.com/rodrigosevero/fiap-fase4-manchetes>
+
+Falhas documentadas: invenção factual ("Morre o papa João Paulo II, presidente de
+Cuba"), 2 de 300 manchetes longas (até 41 palavras) e 16 de 900 sugestões copiadas.
 
 ## Próxima ação (em ordem)
 
